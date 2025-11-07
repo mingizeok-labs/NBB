@@ -80,20 +80,33 @@ def check_num(in_num: str, num: str):
             return 'out!!!'
     else:
         return f'{strike_count} Strike, {ball_count} Ball.'
+    
+# 게임 로직
+def start_game():
+    num = create_num() # 숫자 생성
+    challenge_count = 0 # 도전 횟수 카운팅을 위한 초기값.
+    print(num)
+    while num:
+        in_num = input('4자리 숫자를 입력하세요. : ') # 숫자 유추 과정.
+        check = check_num(in_num, num) # 검증 로직 작동
+        challenge_count += 1
+        print(f'{challenge_count} 번째 시도, {check}') # 검증 로직 결과 출력.
+        if check == 'strike!!!': # 정답일 경우 반복문 종료
+            break
         
 
 
-def start_game():
+def NBB_game():
     start = input('게임을 시작하겠습니까? (y, n) : ')
-    if start == 'y':
-        num = create_num() # 숫자 생성
-        # print(num)
-        while num:
-            in_num = input('4자리 숫자를 입력하세요. : ') # 숫자 유추 과정.
-            check = check_num(in_num, num) # 검증 로직 작동
-            print(check) # 검증 로직 결과 출력.
-            if check == 'strike!!!': # 정답일 경우 반복문 종료
-                break
+    while start == 'y':
+        start_game() # 게임 로직 실행 (함수 호출)
+        restart = input('다시 도전하시겠습니까? (y, n) : ')
+        if restart == 'n':
+            break
+        # if restart == 'y':
+        #     return start_game()
+        # else:
+        #     print('goodbye:)')
     if start == 'n':
         return 'goodbye:)'
     else:
@@ -102,4 +115,4 @@ def start_game():
 
 
 
-start_game()
+NBB_game()
