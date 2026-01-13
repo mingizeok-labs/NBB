@@ -95,24 +95,21 @@ def start_game():
             break
         
 
-
+# 시작
 def NBB_game():
     start = input('게임을 시작하겠습니까? (y, n) : ')
     while start == 'y':
         start_game() # 게임 로직 실행 (함수 호출)
         restart = input('다시 도전하시겠습니까? (y, n) : ')
-        if restart == 'n':
+        if restart == 'y':
+            continue
+        else:
+            print('goodbye:)')
             break
-        # if restart == 'y':
-        #     return start_game()
-        # else:
-        #     print('goodbye:)')
     if start == 'n':
-        return 'goodbye:)'
+        print('goodbye:)')
     else:
         print('잘못된 입력입니다.')
-        return start_game()
-
 
 
 NBB_game()
