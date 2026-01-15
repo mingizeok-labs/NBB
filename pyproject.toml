@@ -1,0 +1,22 @@
+[project]
+name = "number-baseball"
+version = "0.1.0"
+description = "A simple number baseball game built with FastAPI."
+authors = [
+    {name = "KIM SHINEDAY",email = "kimshineday99@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.128.0,<0.129.0)",
+    "uvicorn (>=0.40.0,<0.41.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.2"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
