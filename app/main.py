@@ -1,6 +1,15 @@
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
+
+from app.core.config import settings
 
 app = FastAPI()
+
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key = settings.SESSION_KEY
+)
 
 
 @app.get("/")
