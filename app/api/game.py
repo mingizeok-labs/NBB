@@ -11,7 +11,8 @@ Docstring for app.api.game
 """
 from fastapi import APIRouter, Request
 
-from app.services import create, session
+from app.schemas.game_setting import InputNumber
+from app.services import create, session, game
 
 
 router = APIRouter(prefix='/nbb/api/v1', tags=['GAME'])
@@ -26,3 +27,16 @@ async def game_setting(request: Request):
         'history': request.session['history']
     }
     return test
+
+"""
+### lets_play
+게임 진행 관련 로직실행
+- 유저에게 숫자 입력을 받음 : input_number -> InputNumber
+- 정답과 비교한 값을 리턴 : Verification.check_logic()
+"""
+
+@router.post('/lets_play', description='게임 진행')
+async def playing_game(request: Request, input_number: str):
+    number_obj = InputNumber(input=input_number) # 유저가 입력한 값, 숫자 4자리인지 검증
+    v = game.Verification(input_number=number_obj.input, answer=request.session['answer'])
+    return v.check_logic()
