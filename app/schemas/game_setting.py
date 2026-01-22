@@ -26,3 +26,17 @@ class RandomInt(BaseModel):
         if not v.isdigit(): # 만들어진 숫자에 다른 문자열이 포함되어있는지 검증
             raise ValueError('랜덤숫자 생성 오류: 숫자가 아닌 문자열이 포함되어있습니다.')
         return v
+    
+
+class InputNumber(BaseModel):
+    input : str
+
+    @field_validator('input')
+    @classmethod
+    def is_valid_input(cls, v):
+        if not v.isdigit():
+            raise ValueError('입력 오류: 숫자만 입력해주세요.')
+        if len(v) != 4:
+            raise ValueError('입력 오류: 4자리 숫자만 입력해주세요.')
+        return v
+    
