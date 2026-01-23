@@ -9,6 +9,10 @@ Docstring for app.services.game
 """
 
 class Verification:
+    """
+    Docstring for Verification
+    숫자야구 숫자 검증 로직
+    """
     def __init__(self, input_number: str, answer: str):
         self.input_number = input_number # 유저가 입력한 값
         self.answer = answer # 정답

@@ -6,6 +6,10 @@ Docstring for app.services.session
 """
 # 세션 초기화
 def init(session: dict, number):
+    """
+    Docstring for init
+    게임 시작 시, 세션 초기화 함수
+    """
     session.clear() # 이전 게임 기록 제거
     
     session['answer'] = number # 정답
