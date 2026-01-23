@@ -15,7 +15,7 @@ class SessionData(BaseModel):
     """
     answer : str
     count : int
-    history : dict[str, str]
+    history : list
 
 
 class RandomInt(BaseModel):

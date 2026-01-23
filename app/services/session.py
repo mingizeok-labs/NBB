@@ -14,5 +14,5 @@ def init(session: dict, number):
     
     session['answer'] = number # 정답
     session['count'] = 0 # 시도 횟수 카운트 초기화
-    session['history'] = {} # 답안 제출 이력 초기화 ex) '첫번째 답안': 1234
+    session['history'] = [] # 답안 제출 이력 초기화 ex) '첫번째 답안': 1234
 
