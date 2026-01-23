@@ -1,5 +1,5 @@
 """
-Docstring for app.api.session
+Docstring for app.core.session
 Session에 저장되어있는 데이터 관리 로직 작성
 
 """
@@ -33,3 +33,23 @@ def get_session_data(request: Request) -> SessionDataGroup:
     :rtype: SessionDataGroup
     """
     return SessionDataGroup(request)
+
+class SessionUpdate:
+    """
+    Docstring for SessionUpdate
+    게임 진행 중 업데이트 사항들을 세션에 반영
+    - update_history : 제출 이력
+    - counting : 제출 횟수
+    """
+    def __init__(self, request: Request):
+        self.org = get_session_data(request)
+        self.session = request.session
+
+    def update_history(self, input_data: str):
+        data = {self.org.count + 1: input_data}
+        self.session['history'].append(data)
+        return self.session['history']
+
+    def counting(self):
+        self.session['count'] = self.org.count + 1
+        return self.session['count']

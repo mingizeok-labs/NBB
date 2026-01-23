@@ -6,8 +6,8 @@ Docstring for app.api.game
 """
 from fastapi import APIRouter, Request, Depends
 
-from app.core.session import SessionDataGroup, get_session_data
-from app.schemas.game_setting import InputNumber
+from app.core.session import SessionDataGroup, get_session_data, SessionUpdate
+from app.schemas.game_setting import InputNumber, SessionData
 from app.services import create, session, game
 
 
@@ -35,7 +35,8 @@ async def game_setting(request: Request):
 @router.post('/lets_play', description='게임 진행')
 async def playing_game(
     input_num: InputNumber, # 유저가 입력한 값이 숫자인지 검증
-    session_data: SessionDataGroup = Depends(get_session_data) # 의존성 부여, Sessiondata 불러오는 함수 먼저 실행
+    session_data: SessionDataGroup = Depends(get_session_data), # 의존성 부여, Sessiondata 불러오는 함수 먼저 실행
+    request: Request = Depends
     ):
     """
     ### lets_play
@@ -47,4 +48,16 @@ async def playing_game(
         input_number=input_num.input, # 유저가 입력한 검증된 데이터 값
         answer=session_data.answer # 세션에 저장되어있는 정답을 가져옴
         )
-    return v.check_logic() # 로직 확인 후 결과 값 리턴
+    
+    session_update = SessionUpdate(request)
+
+    update_history = session_update.update_history(input_num.input)
+    update_count = session_update.counting()
+
+    return_data = {
+        'input': v.check_logic(),
+        'count': update_count,
+        'history': update_history
+    }
+
+    return return_data
