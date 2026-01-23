@@ -9,8 +9,9 @@ Docstring for app.api.game
 
 ** 기능 관련 로직은 services에 작성 **
 """
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 
+from app.core.session import SessionDataGroup, get_session_data
 from app.schemas.game_setting import InputNumber
 from app.services import create, session, game
 
@@ -36,7 +37,12 @@ async def game_setting(request: Request):
 """
 
 @router.post('/lets_play', description='게임 진행')
-async def playing_game(request: Request, input_number: str):
-    number_obj = InputNumber(input=input_number) # 유저가 입력한 값, 숫자 4자리인지 검증
-    v = game.Verification(input_number=number_obj.input, answer=request.session['answer'])
-    return v.check_logic()
+async def playing_game(
+    input_num: InputNumber, # 유저가 입력한 값이 숫자인지 검증
+    session_data: SessionDataGroup = Depends(get_session_data) # 의존성 부여, Sessiondata 불러오는 함수 먼저 실행
+    ):
+    v = game.Verification( # 비교 로직
+        input_number=input_num.input, # 유저가 입력한 검증된 데이터 값
+        answer=session_data.answer # 세션에 저장되어있는 정답을 가져옴
+        )
+    return v.check_logic() # 로직 확인 후 결과 값 리턴
