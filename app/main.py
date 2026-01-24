@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.api.game import router as game_router
+from app.api.test_router import router as test_router
+
 from app.core.config import settings
 
 app = FastAPI()
@@ -14,6 +16,9 @@ app.add_middleware( # SessionMiddleware 추가
 # Router
 app.include_router(game_router)
 
+# Test Router
+if settings.ENV == 'test':
+    app.include_router(test_router)
 
 @app.get("/")
 def read_root():

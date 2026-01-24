@@ -7,10 +7,10 @@ from app.services.create import create_number
 from app.services.game import Verification
 from app.schemas.game_setting import RandomInt
 
-client = TestClient(app)
+# client = TestClient(app)
 
 # 게임 시작 시, 초기화 test
-def test_game_setting(): # API test / session 생성 확인
+def test_game_setting(client): # API test / session 생성 확인
     response = client.post('/nbb/api/v1/start')
     assert response.status_code == 200 # 초기화 성공
 
@@ -64,3 +64,29 @@ class TestVerification:
     def test_success_case_5(self):
         v = Verification(input_number='0909', answer='1234')
         assert v.check_logic()['0909'] == 'out'
+
+
+
+# 숫자야구 검증 로직 API test `/lets_play`
+def test_playgame(session_data_set_up):
+    response = session_data_set_up.post('/nbb/api/v1/lets_play', json={'input': '1234'})
+
+    assert response.status_code == 200 # 상태코드 확인
+
+    data = response.json() # 데이터 객체화
+    check_history = data['history']
+    assert len(check_history) == 1
+    assert data['count'] == 1
+    assert check_history[0] == {'1': {'1234': 'out'}}
+
+def test_playgame_failcase_1(session_data_set_up):
+    """
+    Docstring for test_playgame_failcase
+    잘못된 값 입력 : 입력된 숫자가 4자리가 아닌 경우
+    """
+    response = session_data_set_up.post('/nbb/api/v1/lets_play', json={'input': '123'})
+    assert response.status_code == 422
+
+def test_playgame_failcase_2(session_data_set_up):
+    response = session_data_set_up.post('/nbb/api/v1/lets_play', json={'input': '테스트 중'})
+    assert response.status_code == 422
