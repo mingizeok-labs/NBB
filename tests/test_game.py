@@ -21,9 +21,9 @@ def test_create_number():
     assert valid.number.isdecimal() == True
 
 # RandomInt 검증로직 실패케이스
-class RandomIntFailCaseTest:
+class TestRandomIntFailCase:
     ### 1 글자수 오류
-    def test_randomint_fail_1():
+    def test_randomint_fail_1(self):
         with raises(ValidationError): # 오류 발생 시 test 통과
             RandomInt(number='012')
 
@@ -31,7 +31,7 @@ class RandomIntFailCaseTest:
             RandomInt(number='99999')
 
     ### 2 숫자가 아닌 다른 문자열 포함 오류
-    def test_randomint_fail_2():
+    def test_randomint_fail_2(self):
         with raises(ValidationError):
             RandomInt(number='테스트 케이스 작성 중')
 
@@ -39,7 +39,7 @@ class RandomIntFailCaseTest:
             RandomInt(number='ab34')
 
     ### 3 데이터가 없을 때
-    def test_randomint_fail_3():
+    def test_randomint_fail_3(self):
         with raises(ValidationError):
             RandomInt(number='')
 
