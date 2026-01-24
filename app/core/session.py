@@ -45,8 +45,8 @@ class SessionUpdate:
         self.org = get_session_data(request)
         self.session = request.session
 
-    def update_history(self, input_data: str):
-        data = {self.org.count + 1: input_data}
+    def update_history(self, input_data: dict):
+        data = {str(self.org.count + 1): input_data}
         self.session['history'].append(data)
         return self.session['history']
 
