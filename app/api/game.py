@@ -56,6 +56,8 @@ async def playing_game(
 
     session_update = SessionUpdate(request)
 
+    update_status = session_data.status # 기본값 할당
+
     if result[input_num.input] == '정답':
         update_status = session_update.update_status_end()
     
