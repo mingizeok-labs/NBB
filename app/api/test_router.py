@@ -4,7 +4,7 @@ API test 진행하기 위한 Session Setting
 """
 from fastapi import APIRouter, Request
 
-from app.services import session
+from app.core import session
 
 router = APIRouter(prefix='/__test__')
 

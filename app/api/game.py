@@ -7,10 +7,10 @@ Docstring for app.api.game
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import ORJSONResponse
 
-from app.core.session import SessionDataGroup, get_session_data, SessionUpdate
+from app.core.session import init, SessionDataGroup, get_session_data, SessionUpdate
 from app.schemas.game_setting import InputNumber
 from app.schemas.response_model import GameResultResponse
-from app.services import create, session, game
+from app.services import create, game
 
 
 router = APIRouter(prefix='/nbb/api/v1', tags=['GAME'])
@@ -24,7 +24,7 @@ async def game_setting(request: Request):
     - 랜덤 숫자 생성
     """
     number = create.create_number() # 랜덤 숫자 생성
-    session.init(request.session, number) # 세션 초기화 -> 구성
+    init(request.session, number) # 세션 초기화 -> 구성
     test = {
         'number': request.session['answer'],
         'count': request.session['count'],
