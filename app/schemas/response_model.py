@@ -7,5 +7,10 @@ from pydantic import BaseModel
 
 class GameResultResponse(BaseModel):
     input : dict[str, str] = {'5678':'out'}
+    status : str
     count : int = 2
+    history : list[dict[str, dict[str, str]]] = [{'1': {'1234': '0S2B'}}, {'2': {'5678': 'out'}}]
+
+class NowStatusResponse(BaseModel):
+    status : str
     history : list[dict[str, dict[str, str]]] = [{'1': {'1234': '0S2B'}}, {'2': {'5678': 'out'}}]
