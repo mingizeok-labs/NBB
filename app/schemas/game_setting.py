@@ -5,14 +5,17 @@ Docstring for app.schemas.game_setting
 
 from pydantic import BaseModel, field_validator
 
+
 class SessionData(BaseModel):
     """
     Docstring for SessionData
     세션에 저장되어있는 정보
+    - status : 진행 상태
     - answer : 정답
     - count : 시도 횟수
     - history : 제출 이력
     """
+    status : str
     answer : str
     count : int
     history : list

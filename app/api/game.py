@@ -7,10 +7,10 @@ Docstring for app.api.game
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import ORJSONResponse
 
-from app.core.session import SessionDataGroup, get_session_data, SessionUpdate
+from app.core.session import init, SessionDataGroup, get_session_data, SessionUpdate
 from app.schemas.game_setting import InputNumber
-from app.schemas.response_model import GameResultResponse
-from app.services import create, session, game
+from app.schemas.response_model import GameResultResponse, NowStatusResponse
+from app.services import create, game
 
 
 router = APIRouter(prefix='/nbb/api/v1', tags=['GAME'])
@@ -24,14 +24,14 @@ async def game_setting(request: Request):
     - 랜덤 숫자 생성
     """
     number = create.create_number() # 랜덤 숫자 생성
-    session.init(request.session, number) # 세션 초기화 -> 구성
+    init(request.session, number) # 세션 초기화 -> 구성
     test = {
+        'status': request.session['status'],
         'number': request.session['answer'],
         'count': request.session['count'],
         'history': request.session['history']
     }
     return test
-
 
 
 @router.post('/lets_play', description='게임 진행', response_class=ORJSONResponse, response_model=GameResultResponse)
@@ -53,12 +53,30 @@ async def playing_game(
     
     result = v.check_logic() # 비교 값 -> history에 함께 넣기 위해 변수 할당
 
+
     session_update = SessionUpdate(request)
+
+    if result[input_num.input] == '정답':
+        update_status = session_update.update_status_end()
+    
+    elif session_data.status != 'in_progress':
+        update_status = session_update.update_status_ing()
+
     update_history = session_update.update_history(result)
     update_count = session_update.counting()
     
     return {
         'input': result,
+        'status': update_status,
         'count': update_count,
         'history': update_history
     }
+
+
+@router.get('/lets_play', description='게임 상태 조회', response_class=ORJSONResponse, response_model=NowStatusResponse)
+def now_status(session_data : SessionDataGroup = Depends(get_session_data)):
+    return {
+        'status': session_data.status,
+        'history': session_data.history
+    }
+    
