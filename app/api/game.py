@@ -7,7 +7,7 @@ Docstring for app.api.game
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import ORJSONResponse
 
-from app.core.session import init, SessionDataGroup, get_session_data, SessionUpdate
+from app.core.session import init, SessionDataGroup, get_session_data, SessionUpdate, session_reset
 from app.schemas.game_setting import InputNumber
 from app.schemas.response_model import GameResultResponse, NowStatusResponse
 from app.services import create, game
@@ -15,7 +15,7 @@ from app.services import create, game
 
 router = APIRouter(prefix='/nbb/api/v1', tags=['GAME'])
 
-@router.post('/start', description='게임 초기화')
+@router.post('/start', description='게임 초기화', status_code=201)
 async def game_setting(request: Request):
     """
     ### start
@@ -80,3 +80,8 @@ def now_status(session_data : SessionDataGroup = Depends(get_session_data)):
         'history': session_data.history
     }
     
+
+@router.post('/reset', description='게임 종료', status_code=204)
+def reset_session(request: Request):
+    reset_msg = session_reset(request.session)
+    return {'게임 종료': reset_msg}
