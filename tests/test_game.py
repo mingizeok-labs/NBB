@@ -12,7 +12,7 @@ from app.schemas.game_setting import RandomInt
 # 게임 시작 시, 초기화 test
 def test_game_setting(client): # API test / session 생성 확인
     response = client.post('/nbb/api/v1/start')
-    assert response.status_code == 200 # 초기화 성공
+    assert response.status_code == 201 # 초기화 성공
     assert response.json()['status'] == 'start' # + status 상태 확인 테스트 추가
 
 # 랜덤숫자 생성 test
@@ -102,3 +102,14 @@ def test_status(session_data_set_up):
 def test_status_check_1(session_data_set_up):
     response = session_data_set_up.post('/nbb/api/v1/lets_play', json={'input': '0987'})
     assert response.json()['status'] == 'end'
+
+
+# 게임 종료 요청 test
+def test_game_end(session_data_set_up):
+    response = session_data_set_up.post('/nbb/api/v1/reset')
+    assert response.status_code == 204
+
+def test_401(client):
+    response = client.get('/nbb/api/v1'
+    '/lets_play')
+    assert response.status_code == 401
