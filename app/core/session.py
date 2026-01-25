@@ -4,7 +4,7 @@ Session에 저장되어있는 데이터 관리 로직 작성
 
 """
 from enum import Enum
-from fastapi import Request
+from fastapi import Request, HTTPException, status
 
 from app.schemas.game_setting import SessionData
 
@@ -55,6 +55,12 @@ def get_session_data(request: Request) -> SessionDataGroup:
     :return: Description
     :rtype: SessionDataGroup
     """
+    data = request.session
+    if not data:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="세션이 초기화되었거나 만료되었습니다."
+        )
     return SessionDataGroup(request)
 
 class SessionUpdate:
@@ -84,3 +90,9 @@ class SessionUpdate:
     def update_status_end(self):
         self.session['status'] = StatusType.END.value
         return self.session['status']
+    
+
+# 게임 종료를 위한 세션 정리
+def session_reset(session: dict):
+    session.clear()
+    return '세션 초기화 완료'
