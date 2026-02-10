@@ -10,19 +10,18 @@ from app.core.config import settings
 app = FastAPI()
 
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware, # 브라우저 요청 허용 규칙
     allow_origins = settings.ALLOWED_ORIGINS.split(","), # 브라우저 주소 허용
     allow_credentials = True, # 세션 쿠키 통과
     allow_methods = settings.ALLOWED_METHODS.split(","),
-    allow_headers = settings.ALLOWED_HEADERS,
-    same_site=settings.SESSION_SAMESITE,
-    https_only=settings.SESSION_HTTPS_ONLY,
+    allow_headers = settings.ALLOWED_HEADERS.split(","),
 )
 
 app.add_middleware( # SessionMiddleware 추가
-    SessionMiddleware,
+    SessionMiddleware, # 쿠키 속성
     secret_key = settings.SESSION_KEY,
     max_age=settings.SESSION_MAX_AGE,
+    same_site=settings.SESSION_SAMESITE,
     https_only=settings.USE_HTTPS,
 )
 
