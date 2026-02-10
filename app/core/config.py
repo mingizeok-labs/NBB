@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: Set[str]
     USE_HTTPS: bool
 
-    ALLOWED_METHODS: List[str]
-    ALLOWED_HEADERS: List[str]
+    ALLOWED_METHODS: str
+    ALLOWED_HEADERS: str
     SESSION_SAMESITE: str
     SESSION_HTTPS_ONLY: bool
 
@@ -20,4 +20,8 @@ class Settings(BaseSettings):
         extra="ignore",
         env_parse_delimiter=",",
     )
+
+    def split(self, value: str) -> List[str]:
+        return [v.strip() for v in value.split(",") if v.strip()]
+    
 settings = Settings()

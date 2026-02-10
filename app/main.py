@@ -13,7 +13,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins = list(settings.ALLOWED_ORIGINS), # 브라우저 주소 허용
     allow_credentials = True, # 세션 쿠키 통과
-    allow_methods = settings.ALLOWED_METHODS,
+    allow_methods = settings.ALLOWED_METHODS.split(","),
     allow_headers = settings.ALLOWED_HEADERS,
     same_site=settings.SESSION_SAMESITE,
     https_only=settings.SESSION_HTTPS_ONLY,
