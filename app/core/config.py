@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     SESSION_KEY : str
     SESSION_MAX_AGE: int
-    ALLOWED_ORIGINS: Set[str]
+    ALLOWED_ORIGINS: str
     USE_HTTPS: bool
 
     ALLOWED_METHODS: str
