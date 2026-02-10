@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.api.game import router as game_router
@@ -8,9 +9,19 @@ from app.core.config import settings
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = list(settings.ALLOWED_ORIGINS), # 브라우저 주소 허용
+    allow_credentials = True, # 세션 쿠키 통과
+    allow_methods = settings.ALLOWED_METHODS,
+    allow_headers = settings.ALLOWED_HEADERS,
+)
+
 app.add_middleware( # SessionMiddleware 추가
     SessionMiddleware,
-    secret_key = settings.SESSION_KEY
+    secret_key = settings.SESSION_KEY,
+    max_age=settings.SESSION_MAX_AGE,
+    https_only=settings.USE_HTTPS,
 )
 
 # Router
