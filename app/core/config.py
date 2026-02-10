@@ -11,10 +11,13 @@ class Settings(BaseSettings):
 
     ALLOWED_METHODS: List[str]
     ALLOWED_HEADERS: List[str]
+    SESSION_SAMESITE: str
+    SESSION_HTTPS_ONLY: bool
 
     model_config = SettingsConfigDict(
         env_file = '.env',
         env_parse_none_str=True, 
         extra="ignore",
+        env_parse_delimiter=",",
     )
 settings = Settings()

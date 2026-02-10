@@ -15,6 +15,8 @@ app.add_middleware(
     allow_credentials = True, # 세션 쿠키 통과
     allow_methods = settings.ALLOWED_METHODS,
     allow_headers = settings.ALLOWED_HEADERS,
+    same_site=settings.SESSION_SAMESITE,
+    https_only=settings.SESSION_HTTPS_ONLY,
 )
 
 app.add_middleware( # SessionMiddleware 추가
