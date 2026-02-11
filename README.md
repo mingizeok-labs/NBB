@@ -2,7 +2,7 @@
 
 ### 한 줄 소개
 숫자야구를 즐길 수 있는 페이지 구현 (BackEnd 로직)  
-[⚾️ 밍기적 숫자야구 하러가기](https://nbb/mingizeok.com)
+[⚾️ 밍기적 숫자야구 하러가기](https://nbb.mingizeok.com)
 
 ### 프로젝트 배경 & 목표
 - Python으로 숫자야구 게임 로직을 만들다 API 개발까지 연결.
